@@ -1,0 +1,54 @@
+{
+  "accuracy": 0.791,
+  "report": {
+    "1-2 hours": {
+      "precision": 0.7744107744107744,
+      "recall": 0.7903780068728522,
+      "f1-score": 0.782312925170068,
+      "support": 291.0
+    },
+    "2-4 hours": {
+      "precision": 0.7314814814814815,
+      "recall": 0.7707317073170732,
+      "f1-score": 0.7505938242280285,
+      "support": 205.0
+    },
+    "Less than 1 hour": {
+      "precision": 0.8081841432225064,
+      "recall": 0.8381962864721485,
+      "f1-score": 0.8229166666666666,
+      "support": 377.0
+    },
+    "More than 4 hours": {
+      "precision": 0.898876404494382,
+      "recall": 0.6666666666666666,
+      "f1-score": 0.7655502392344498,
+      "support": 120.0
+    },
+    "My child/children": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 4.0
+    },
+    "My parent(s)": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 3.0
+    },
+    "accuracy": 0.791,
+    "macro avg": {
+      "precision": 0.8688254672681909,
+      "recall": 0.8443287778881233,
+      "f1-score": 0.8535622758832021,
+      "support": 1000.0
+    },
+    "weighted avg": {
+      "precision": 0.7948578295914499,
+      "recall": 0.791,
+      "f1-score": 0.7906304072327028,
+      "support": 1000.0
+    }
+  }
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Healing Wellness – Naive Bayes</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;background:#0b1220;color:#e7eaf3;margin:0}
+    .wrap{max-width:860px;margin:32px auto;padding:0 16px}
+    .card{background:#0f172a;border:1px solid #21304d;border-radius:14px;padding:14px;margin:16px 0}
+    label{display:block;margin:10px 0 6px}
+    select{width:100%;padding:10px;border-radius:10px;border:1px solid #38486b;background:#0b1220;color:#e7eaf3}
+    button{margin-top:16px;padding:10px 18px;border-radius:10px;border:1px solid #4b7bd8;background:#2b5fb6;color:#fff;cursor:pointer}
+    .hint{font-size:13px;opacity:.8;margin-top:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Healing Wellness – Naive Bayes</h1>
+
+    {% if metrics and 'accuracy' in metrics %}
+    <div class="card">
+      <h3>Akurasi (Training): {{ '%.2f'|format(metrics['accuracy'] * 100) }}%</h3>
+      <p class="hint">Akurasi dihitung pada data pelatihan (bukan data uji).</p>
+    </div>
+    {% endif %}
+
+    <form class="card" method="post" action="/predict">
+      <h2>Input Fitur</h2>
+
+      {% for feat in schema.features %}
+        <label for="{{ feat.name }}">
+          {{ field_labels.get(feat.name, feat.name|replace('_', ' ')) }}
+        </label>
+
+        <select name="{{ feat.name }}" id="{{ feat.name }}">
+          {% if ui_choices and ui_choices.get(feat.name) %}
+            {% for value,label in ui_choices.get(feat.name) %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          {% else %}
+            {% for c in feat.categories %}
+              <option value="{{ c }}">{{ category_labels.get(feat.name, {}).get(c, c) }}</option>
+            {% endfor %}
+          {% endif %}
+        </select>
+      {% endfor %}
+
+      <button type="submit">Prediksi</button>
+      <p class="hint">Nilai yang dikirim ke model tetap kategori asli agar prediksi akurat.</p>
+    </form>
+  </div>
+</body>
+</html>

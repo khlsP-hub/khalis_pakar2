@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hasil Prediksi</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;background:#0b1220;color:#e7eaf3;margin:0}
+    .container{max-width:860px;margin:32px auto;padding:0 16px}
+    .card{background:#0f172a;border:1px solid #21304d;border-radius:14px;padding:14px;margin:16px 0}
+    a{color:#9bbcff;text-decoration:none}
+    .prediction{font-size:22px;margin:6px 0 14px}
+    ul{margin:8px 0 0 20px}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:600}
+    .badge.sehat{background:#124d28;color:#c9f2d7;border:1px solid #1e7a3f}
+    .badge.potensi{background:#5a430f;color:#fff1c2;border:1px solid #a07a1b}
+    .badge.rusak{background:#5e1120;color:#ffd7de;border:1px solid #b21f38}
+    .hint{font-size:13px;opacity:.8;margin-top:6px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back">&larr; Kembali</a>
+    <h1>Hasil Prediksi</h1>
+
+    <div class="card">
+      <h2>Prediksi (Naive Bayes)</h2>
+      <p class="prediction">{{ prediction }}</p>
+
+      {% if proba %}
+      <h3>Probabilitas Kelas</h3>
+      <ul>
+        {% for cls, p in proba %}
+          <li><b>{{ cls }}</b>: {{ '%.3f'|format(p) }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <h2>Status Kesehatan Telinga (berdasarkan input)</h2>
+      {% if risk_level %}
+        {% if risk_level == 'Sehat' %}
+          <span class="badge sehat">Sehat</span>
+        {% elif risk_level == 'Potensi Rusak' %}
+          <span class="badge potensi">Potensi Rusak</span>
+        {% else %}
+          <span class="badge rusak">Rusak</span>
+        {% endif %}
+      {% else %}
+        <p>-</p>
+      {% endif %}
+      {% if risk_reasons %}
+        <p class="hint">Alasan: {{ risk_reasons }}</p>
+      {% endif %}
+    </div>
+
+    {% if schema and inp %}
+    <div class="card">
+      <h2>Ringkasan Input</h2>
+      <ul>
+        {% for feat in schema.features %}
+          <li>
+            <b>{{ field_labels.get(feat.name, feat.name|replace('_',' ')) }}</b>:
+            {# tampilkan label Indonesia untuk nilai kategori #}
+            {% set val = inp.get(feat.name, '-') %}
+            {{ category_labels.get(feat.name, {}).get(val, val) }}
+          </li>
+        {% endfor %}
+      </ul>
+      <p class="hint">Catatan: nilai yang ditampilkan sudah dilokalkan untuk tampilan, namun yang diproses model adalah nilai aslinya.</p>
+    </div>
+    {% endif %}
+
+    {% if metrics and 'accuracy' in metrics %}
+    <div class="card">
+      <h3>Akurasi (Training): {{ '%.2f'|format(metrics['accuracy'] * 100) }}%</h3>
+      <p class="hint">Akurasi dihitung pada data pelatihan.</p>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
